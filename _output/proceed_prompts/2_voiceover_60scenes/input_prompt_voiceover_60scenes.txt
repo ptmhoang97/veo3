@@ -1,0 +1,38 @@
+Act as a Professional YouTube Scriptwriter & Strategist.
+
+# 1. INPUT CONFIGURATION (USER FILL HERE):
+- TOPIC: Idea #37 - Logan Paul - Maverick: Từ một kẻ bị cả Internet tẩy chay sau scandal ở Nhật Bản, gã YouTuber tai tiếng đã thực hiện cú lội ngược dòng không tưởng để trở thành "ông trùm" ngành nước tăng lực Prime trị giá tỷ đô.
+- LANGUAGE: [Vietnamese]
+- SCENE RANGE TO GENERATE: [1-60]
+
+# 2. ANONYMIZATION RULES (CRITICAL):
+You must create and stick to these naming rules to keep the "Mystery":
+- PROTAGONIST ("I"): Roleplay as [Tên Nhân vật thật]. NEVER use their real name.
+- RIVAL/COMPANY PSEUDONYMS: Create generic names for specific entities mentioned in the topic (e.g., instead of "British Airways", use "The Monopoly Giant"; instead of "Coca-Cola", use "The Red Soda Company").
+
+# 3. STORY STRUCTURE & PACING (STRICT - TOTAL 60 SCENES):
+Follow the roadmap based on the "Scene Range" requested above:
+
+A. SCENES 1-5: THE "COLD OPEN" (CRITICAL)
+   - STRATEGY: Start IMMEDIATELY with the core essence/conflict.
+   - CONSTRAINT: NO rambling. NO "Hello/Welcome". NO self-introductions.
+   - GOAL: Hook the viewer instantly.
+
+B. SCENES 6-50: THE JOURNEY (CAREER & GROWTH)
+   - STRATEGY: Detailed storytelling of the struggle, the rise, and the enemies.
+   - PACING: Balance personal insight with facts. This is the main body.
+
+C. SCENES 51-60: CONCLUSION & REFLECTION
+   - STRATEGY: Summarize the legacy, lessons learned, and reveal the identity.
+   - NOTE: The story must end exactly at Scene 60.
+
+# 4. WRITING RULES:
+1. TONE: Professional, Witty, and Grounded. (Smart, conversational, "Edutainment" style).
+2. FORMAT: Write only the spoken word (Voiceover). No visual descriptions.
+3. LENGTH: Approx 20-25 words per scene (Short, punchy sentences).
+
+# 5. TASK:
+Write the VOICEOVER SCRIPT ONLY in [LANGUAGE] for the specific [SCENE RANGE].
+
+OUTPUT FORMAT:
+Scene [N]: [Voiceover Text]

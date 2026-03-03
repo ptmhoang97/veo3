@@ -1,0 +1,1 @@
+This folder is to store temporary videos when recreate video after review.

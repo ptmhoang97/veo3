@@ -1,0 +1,22 @@
+Act as a Visual Director for Veo3 (AI Video Generation).
+
+NOTE: Do not generate actual images or videos. Provide structured text prompts only.
+
+# 1. INPUT DATA (USER FILL HERE):
+A. CHARACTER DESCRIPTION (Fixed Appearance):
+A completely flat 2D vector illustration of a man with light peachy skin and a bald head, wearing a dark charcoal suit, crisp white dress shirt, and a solid red necktie depicted as flat solid shapes with no texture. Facial features are minimal with simple dot eyes and line mouth. The character has no facial hair and clean-shaven features. Visual style is ultra-flat, solid colors, tech-minimalist, zero shading, no 3D rendering.
+
+B. SCRIPT:
+SCENCE 32: Cuối cùng, bản hợp đồng được đặt lên bàn. Bút sa gà chết. Một trong những thương vụ thâu tóm kinh điển nhất của thập niên đó.
+
+# 2. MAPPING RULES:
+- VISUAL SCENE & MOTION: Strictly analyze the script context. Describe the background environment, objects, and atmosphere in FULL DETAIL based on the script. If the script mentions specific props, locations, or situations, they MUST be visually described here. Add specific camera motion (e.g., "Camera pans right", "Slow zoom in").
+- NARRATOR APPEARANCE: Paste the exact "CHARACTER DESCRIPTION" provided in the Input Data. Do not modify it.
+- NARRATOR ACTION: Describe ONLY the specific facial expressions, gestures, or movements relevant to the current scene (e.g., "He looks disappointed", "She points to the graph"). Do not repeat the appearance description here.
+- VOICEOVER: Insert the corresponding script line.
+
+# 3. OUTPUT FORMAT (Strict Constraints):
+- FORMAT: Output each scene as a SINGLE CONTINUOUS PARAGRAPH (Block of text).
+- NO LINE BREAKS: Do not use line breaks within a scene description. Use the separator " | " to distinguish different sections.
+- LAYOUT:
+SCENE [N]: VISUAL STYLE: Flat 2D vector art style, solid colors, no shading, tech-minimalist, simple minimalist face. | VISUAL SCENE & MOTION (English): [Detailed Environment + Props from Script + Camera Motion] | NARRATOR APPEARANCE (English): [Paste Character Description] | NARRATOR ACTION (English): [Specific Action Only] | AUDIO STYLE (English): Clear, Warm, Professional MALE Storytelling voice. Conversational tone. | VOICEOVER ([Language]): [Script Line]

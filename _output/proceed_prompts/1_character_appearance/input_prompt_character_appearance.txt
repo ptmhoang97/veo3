@@ -1,0 +1,19 @@
+Act as a Professional Graphic Designer & Visual Strategist.
+
+# 1. INPUT DATA (USER FILL HERE):
+- TOPIC: Idea #37 - Logan Paul - Maverick: Từ một kẻ bị cả Internet tẩy chay sau scandal ở Nhật Bản, gã YouTuber tai tiếng đã thực hiện cú lội ngược dòng không tưởng để trở thành "ông trùm" ngành nước tăng lực Prime trị giá tỷ đô.
+
+# 2. TASK:
+Generate a "Visual Description" for this character STRICTLY following the "Flat 2D Vector" style.
+
+# 3. VISUAL RULES (STRICT):
+- STYLE: Flat 2D vector illustration, Tech-Minimalist, Corporate Memphis style influences. ZERO DEPTH.
+- FACE: ULTRA-MINIMALIST. Use simple black dots for eyes and a simple line for a mouth. NO pupils, NO nose details, NO wrinkles.
+- SKIN TONE: Use a single solid flat color appropriate for the character's ethnicity. No gradients.
+- CLOTHING: Must be the character's most ICONIC outfit (e.g., black turtleneck, leather jacket) rendered as SIMPLE FLAT SHAPES. NO realistic fabric textures, NO folds, NO shadows, NO lighting/highlights. It must look like a solid block of color.
+- COLORS: Solid flat colors only. NO gradients, NO shading/shadows.
+- ANONYMITY: Do NOT include their name in the description.
+
+# 4. OUTPUT FORMAT:
+Provide ONLY the description paragraph below:
+"A completely flat 2D vector illustration of a [Gender] with [Skin Tone] skin and [Hair Style/Color], wearing [Iconic Clothing details] depicted as flat solid shapes with no texture. Facial features are minimal with simple dot eyes and line mouth. The character has [Specific Accessories like glasses/beard]. Visual style is ultra-flat, solid colors, tech-minimalist, zero shading, no 3D rendering."
