@@ -28,12 +28,11 @@ class AutoCreateVideoWorker(WorkerThread):
         self.wait_for_enter = wait_for_enter
         self.auto_restart_on_failure = auto_restart_on_failure
         self.timeout_seconds = timeout_seconds
-        self.temp_profile_dir = None
     
     def _init_browser(self):
         """Initialize Firefox browser using shared function."""
         self.driver, _ = init_firefox_with_profile(
-            self.temp_profile_dir,
+            self.firefox_profile,
             headless=False,
             log_func=self.log
         )
@@ -94,7 +93,7 @@ class AutoCreateVideoWorker(WorkerThread):
                 return
             
             # Init browser lần đầu using centralized function
-            self.driver, self.temp_profile_dir = init_firefox_with_profile(
+            self.driver, _ = init_firefox_with_profile(
                 self.firefox_profile, False, self.log
             )
             
@@ -194,11 +193,7 @@ class AutoCreateVideoWorker(WorkerThread):
         finally:
             # Giữ browser mở để kiểm tra
             # self._close_browser()
-            if self.temp_profile_dir and os.path.exists(self.temp_profile_dir):
-                try:
-                    shutil.rmtree(self.temp_profile_dir)
-                except:
-                    pass
+            pass
     
     def _load_prompts(self):
         """Load prompts from gemini results file"""

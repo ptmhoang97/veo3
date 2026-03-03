@@ -532,46 +532,36 @@ class WorkerThread(QThread):
 def init_firefox_with_profile(firefox_profile, headless=False, log_func=None):
     """Shared function to initialize Firefox with profile and geckodriver.
     
+    Uses the profile DIRECTLY (no temp copy) to preserve all browser data
+    (localStorage, IndexedDB, cache, history) between runs.
+    This makes the browser look like a real user's browser.
+    
     Args:
         firefox_profile: Path to Firefox profile directory
         headless: Whether to run in headless mode
         log_func: Optional logging function
     
     Returns:
-        (driver, temp_profile_dir) - Firefox driver and temp profile directory path
+        (driver, None) - Firefox driver and None (no temp dir to cleanup)
     """
     def log(msg):
         if log_func:
             log_func(msg)
     
-    # Create temp profile
     log(">>> Đang khởi động Firefox...")
-    temp_profile_dir = tempfile.mkdtemp(prefix="firefox_profile_")
-    log(f"-> Tạo profile tạm: {temp_profile_dir}")
+    log(f"-> Sử dụng profile trực tiếp: {firefox_profile}")
     
-    # Copy important files from original profile
-    important_files = [
-        "cookies.sqlite",      # Login cookies
-        "key4.db",             # Encryption keys
-        "logins.json",         # Saved passwords
-        "cert9.db",            # Certificates
-        "prefs.js",            # All preferences (proxy, network, UI, etc.)
-        "user.js"              # User overrides (if exists)
-    ]
-    for file_name in important_files:
-        src = os.path.join(firefox_profile, file_name)
-        if os.path.exists(src):
-            shutil.copy2(src, temp_profile_dir)
-            log(f"-> Copy {file_name}")
+    if not os.path.exists(firefox_profile):
+        raise FileNotFoundError(f"Profile không tồn tại: {firefox_profile}")
     
-    # Copy extensions folder if exists
-    extensions_src = os.path.join(firefox_profile, "extensions")
-    if os.path.exists(extensions_src):
-        extensions_dst = os.path.join(temp_profile_dir, "extensions")
-        shutil.copytree(extensions_src, extensions_dst)
-        log(f"-> Copy extensions folder")
-    
-    log("-> Đã copy profile settings & login data")
+    # Remove lock file if exists (from previous crashed session)
+    lock_file = os.path.join(firefox_profile, "parent.lock")
+    if os.path.exists(lock_file):
+        try:
+            os.remove(lock_file)
+            log("-> Đã xóa parent.lock (từ session cũ)")
+        except:
+            log("-> ⚠️ Không thể xóa parent.lock, Firefox có thể đang chạy với profile này")
     
     # Init Firefox
     mode_str = "(headless)" if headless else "với GUI"
@@ -579,7 +569,7 @@ def init_firefox_with_profile(firefox_profile, headless=False, log_func=None):
     options = Options()
     if headless:
         options.add_argument("--headless")
-    options.profile = temp_profile_dir
+    options.profile = firefox_profile
     
     # ========== HIDE SELENIUM AUTOMATION ==========
     # 1. Disable webdriver flag (navigator.webdriver = false)
@@ -687,4 +677,4 @@ def init_firefox_with_profile(firefox_profile, headless=False, log_func=None):
     except Exception as e:
         log(f"-> Không thể inject JS: {e}")
     
-    return driver, temp_profile_dir
+    return driver, None

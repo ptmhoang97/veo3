@@ -31,11 +31,10 @@ class DownloadVideosWorker(WorkerThread):
             self.finished_signal.emit(False, "Selenium not installed")
             return
         
-        temp_profile_dir = None
         
         try:
             # Init Firefox using centralized function
-            self.driver, temp_profile_dir = init_firefox_with_profile(
+            self.driver, _ = init_firefox_with_profile(
                 self.firefox_profile, False, self.log
             )
             
@@ -76,11 +75,7 @@ class DownloadVideosWorker(WorkerThread):
             #         self.driver.quit()
             #     except:
             #         pass
-            if temp_profile_dir and os.path.exists(temp_profile_dir):
-                try:
-                    shutil.rmtree(temp_profile_dir)
-                except:
-                    pass
+            pass
     
     def _download_all_videos(self):
         """Scroll qua virtual list và download tất cả videos - TRACK THEO SCENE NUMBER"""

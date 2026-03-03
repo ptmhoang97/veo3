@@ -82,7 +82,6 @@ class FillGeminiWorker(WorkerThread):
             self.finished_signal.emit(False, "Selenium not installed")
             return
             
-        temp_profile_dir = None
         
         try:
             # Load prompts
@@ -123,7 +122,7 @@ class FillGeminiWorker(WorkerThread):
                 self.log(f"▶️ Sẽ tiếp tục từ SCENE {last_scene + 1}\n")
             
             # Init Firefox using centralized function
-            self.driver, temp_profile_dir = init_firefox_with_profile(
+            self.driver, _ = init_firefox_with_profile(
                 self.firefox_profile, self.headless, self.log
             )
             
@@ -178,9 +177,8 @@ class FillGeminiWorker(WorkerThread):
                     time.sleep(2)
                     
                     # Reinit browser using centralized function
-                    # Note: reuse temp_profile_dir from initial setup
                     self.driver, _ = init_firefox_with_profile(
-                        temp_profile_dir, self.headless, self.log
+                        self.firefox_profile, self.headless, self.log
                     )
                     
                     if not self.headless:
@@ -341,8 +339,4 @@ class FillGeminiWorker(WorkerThread):
             #         self.driver.quit()
             #     except:
             #         pass
-            if temp_profile_dir and os.path.exists(temp_profile_dir):
-                try:
-                    shutil.rmtree(temp_profile_dir)
-                except:
-                    pass
+            pass

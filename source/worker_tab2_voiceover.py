@@ -118,11 +118,10 @@ class RunVoiceoverGeminiWorker(WorkerThread):
             self.log(f"🔄 Attempt {attempt}")
             self.log(f"{'='*50}")
             
-            temp_profile_dir = None
             
             try:
                 # Init Firefox using centralized function
-                self.driver, temp_profile_dir = init_firefox_with_profile(
+                self.driver, _ = init_firefox_with_profile(
                     self.firefox_profile, self.headless, self.log
                 )
                 
@@ -181,11 +180,7 @@ class RunVoiceoverGeminiWorker(WorkerThread):
                         except:
                             pass
                         self.driver = None
-                    if temp_profile_dir:
-                        try:
-                            shutil.rmtree(temp_profile_dir, ignore_errors=True)
-                        except:
-                            pass
+
                     time.sleep(2)
                     continue  # Restart loop
                 
@@ -215,11 +210,7 @@ class RunVoiceoverGeminiWorker(WorkerThread):
                             except:
                                 pass
                             self.driver = None
-                        if temp_profile_dir:
-                            try:
-                                shutil.rmtree(temp_profile_dir, ignore_errors=True)
-                            except:
-                                pass
+
                         time.sleep(2)
                         continue  # Restart loop
                     else:
@@ -283,8 +274,3 @@ class RunVoiceoverGeminiWorker(WorkerThread):
                     except:
                         pass
                     self.driver = None
-                if temp_profile_dir:
-                    try:
-                        shutil.rmtree(temp_profile_dir, ignore_errors=True)
-                    except:
-                        pass

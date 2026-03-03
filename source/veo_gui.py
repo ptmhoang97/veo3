@@ -363,21 +363,24 @@ class VeoGUI(QMainWindow):
             'scene_to': '60',
             'gemini_url': 'https://gemini.google.com/app',
             'veo_url': 'https://labs.google/fx/tools/flow/project/75d49ef7-f93c-4654-b25e-21c8ba9bcc91',
-            'profile_path': r'C:\Users\oam81hc\AppData\Roaming\Mozilla\Firefox\Profiles\tzoqxgo8.default'
+            'profile_path': r'C:\Users\Admin\AppData\Roaming\Mozilla\Firefox\Profiles\jvxgmpxu.default-release',
+            'gemini_mode': 'Pro'
         }
         
         if os.path.exists(config_path):
             try:
                 config.read(config_path, encoding='utf-8')
-                return {
+                result = {
                     'topic': config.get('Prompt', 'topic', fallback=defaults['topic']),
                     'language': config.get('Prompt', 'language', fallback=defaults['language']),
                     'scene_from': config.get('Prompt', 'scene_from', fallback=defaults['scene_from']),
                     'scene_to': config.get('Prompt', 'scene_to', fallback=defaults['scene_to']),
                     'gemini_url': config.get('URLs', 'gemini_url', fallback=defaults['gemini_url']),
                     'veo_url': config.get('URLs', 'veo_url', fallback=defaults['veo_url']),
-                    'profile_path': config.get('Firefox', 'profile_path', fallback=defaults['profile_path'])
+                    'profile_path': config.get('Firefox', 'profile_path', fallback=defaults['profile_path']),
+                    'gemini_mode': config.get('Browser', 'gemini_mode', fallback=defaults['gemini_mode'])
                 }
+                return result
             except:
                 pass
         
@@ -744,12 +747,13 @@ class VeoGUI(QMainWindow):
             self._timeout_seconds = dialog.timeout_seconds.value()
             self._auto_restart_on_timeout = dialog.auto_restart_on_timeout.isChecked()
             
-            # Update gemini_mode in config
+            # Reload config from file first
+            self.config = self._load_config()
+            
+            # Then override gemini_mode with dialog selection (takes priority)
             mode_text = dialog.gemini_mode.currentText()
             self.config['gemini_mode'] = mode_text
             
-            # Reload config
-            self.config = self._load_config()
             self.log(f"⚙️ Settings updated from dialog (Gemini Mode: {self.config.get('gemini_mode', 'Pro')})")
     
     def log(self, message):

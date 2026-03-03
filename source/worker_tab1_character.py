@@ -107,11 +107,10 @@ class RunCharacterGeminiWorker(WorkerThread):
             self.log(f"🔄 Attempt {attempt}")
             self.log(f"{'='*50}")
             
-            temp_profile_dir = None
             
             try:
                 # Create temp profile
-                self.driver, temp_profile_dir = init_firefox_with_profile(
+                self.driver, _ = init_firefox_with_profile(
                     self.firefox_profile,
                     self.headless,
                     self.log
@@ -146,9 +145,29 @@ class RunCharacterGeminiWorker(WorkerThread):
                 
                 # Send prompt
                 input_box = WebDriverWait(self.driver, 20).until(
-                    EC.element_to_be_clickable((By.CSS_SELECTOR, "div[role='textbox']"))
+                    EC.presence_of_element_located((By.CSS_SELECTOR, "div[role='textbox']"))
                 )
-                input_box.click()
+                
+                # Dismiss any overlay/popup (email opt-in, etc.) that may block the input
+                try:
+                    self.driver.execute_script("""
+                        // Close any overlay/popup that might be blocking
+                        var overlays = document.querySelectorAll('[role="dialog"], [role="alertdialog"], .modal, .overlay, .popup');
+                        overlays.forEach(function(el) { el.remove(); });
+                        // Click dismiss/close buttons if any
+                        var closeButtons = document.querySelectorAll('button[aria-label="Close"], button[aria-label="Dismiss"], button[aria-label="No thanks"]');
+                        closeButtons.forEach(function(btn) { btn.click(); });
+                    """)
+                    time.sleep(0.5)
+                except:
+                    pass
+                
+                # Use JavaScript click to bypass any remaining overlay
+                try:
+                    input_box.click()
+                except:
+                    self.log("-> Overlay detected, using JS click...")
+                    self.driver.execute_script("arguments[0].click();", input_box)
                 time.sleep(0.5)
                 
                 input_box.send_keys(Keys.CONTROL, "a")
@@ -172,11 +191,6 @@ class RunCharacterGeminiWorker(WorkerThread):
                         except:
                             pass
                         self.driver = None
-                    if temp_profile_dir:
-                        try:
-                            shutil.rmtree(temp_profile_dir, ignore_errors=True)
-                        except:
-                            pass
                     time.sleep(2)
                     continue  # Restart loop
                 
@@ -206,11 +220,6 @@ class RunCharacterGeminiWorker(WorkerThread):
                             except:
                                 pass
                             self.driver = None
-                        if temp_profile_dir:
-                            try:
-                                shutil.rmtree(temp_profile_dir, ignore_errors=True)
-                            except:
-                                pass
                         time.sleep(2)
                         continue  # Restart loop
                     else:
@@ -263,8 +272,3 @@ class RunCharacterGeminiWorker(WorkerThread):
                     except:
                         pass
                     self.driver = None
-                if temp_profile_dir:
-                    try:
-                        shutil.rmtree(temp_profile_dir, ignore_errors=True)
-                    except:
-                        pass
