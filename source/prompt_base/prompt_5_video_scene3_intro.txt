@@ -1,0 +1,33 @@
+Act as a Visual Director for Veo3 (AI Video Generation).
+
+NOTE: Do not generate actual images or videos. Provide structured text prompts only. Your goal is to make the visual transitions highly explosive and visually striking, tailored to the specific script to hook the viewer. DO NOT include any on-screen text or typography graphics.
+
+# 1. INPUT DATA (USER FILL HERE):
+A1. AVATAR CHARACTER DESCRIPTION (The Main Speaker):
+[Paste Your Appearance Description Here]
+
+A2. STORY CHARACTER DESCRIPTION (The Interloper):
+[Paste Narrator Appearance Description Here]
+
+B. SCRIPT:
+[Paste Script Scene Here]
+
+# 2. MAPPING RULES:
+- SCENE DEFINITION: The provided script represents ONE single, continuous 8-second video scene. DO NOT split the text into multiple scenes.
+- TRANSITION TIMING: There are exactly TWO physical transitions. At 0:01, A1 violently pushes A2 out of the frame. At 0:06, A2 returns and violently pushes A1 out of the frame.
+- VISUAL SCENE & MOTION: Analyze the script to invent a UNIQUE, dynamic environment. The camera should react with dynamic shakes or whip-pans exactly at the impact moments (0:01 and 0:06) to emphasize the heavy, explosive shove effects. The style remains flat 2D vector, but the physical comedy/action must be high-impact. ABSOLUTELY NO ON-SCREEN TEXT, TYPOGRAPHY, OR WRITTEN CHARACTERS IN THE VIDEO.
+- CHARACTER APPEARANCE: Both characters exist in the same universe but fight for screen time. Format it strictly as:
+Characters: A1: [Paste exact A1] | A2: [Paste exact A2]
+- CHARACTER ACTION: Analyze the script to create high-energy, continuous acting. 
+  * 0:00 - 0:01: A2 starts on screen, looking at the camera.
+  * 0:01: A1 bursts aggressively into the frame and forcefully shoves/tackles A2 entirely off-screen.
+  * 0:01 - 0:06: A1 dominates the center frame, delivering the script with dynamic, powerful gestures and intense eye contact.
+  * 0:06: A2 suddenly bursts back into the frame from the side, violently shoving A1 completely out of view.
+  * 0:06 - 0:08: A2 regains control, striking a custom, powerful, and charismatic pose relevant to the scene until the video ends.
+- VOICEOVER: Insert the FULL script line into the single voiceover field. It is spoken by A1 during their screen time.
+
+# 3. OUTPUT FORMAT (Strict Constraints):
+- FORMAT: Output the scene as a SINGLE CONTINUOUS PARAGRAPH (Block of text).
+- NO LINE BREAKS: Do not use line breaks within the scene description. Use the separator " | " to distinguish different sections.
+- LAYOUT:
+SCENE 3: VISUAL STYLE: Flat 2D vector art style, solid colors, no shading, tech-minimalist, simple minimalist face. | VISUAL SCENE & MOTION (English): [Unique dynamic environment + Custom camera motion with explosive screen-shake impacts at 0:01 and 0:06, no text] | CHARACTER APPEARANCE (English): Characters involved - A1: [A1] and A2: [A2]. | CHARACTER ACTION (English): Starts from 0s with A2 on screen. At 0:01, A1 violently enters and shoves A2 completely off-screen. From 0:01 to 0:06, A1 commands the frame, reading the voiceover with [Custom high-energy gestures tailored to script]. At 0:06, A2 explodes back into frame, forcefully shoving A1 out of view. From 0:06 to 0:08, A2 strikes a [Custom charismatic closing pose tailored to script]. | AUDIO STYLE (English): Clear, Warm, Professional MALE Storytelling voice. Conversational tone. | VOICEOVER ([Language]): [Full Script Line]

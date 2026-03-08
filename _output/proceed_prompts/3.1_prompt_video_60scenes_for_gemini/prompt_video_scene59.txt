@@ -1,23 +1,28 @@
-[Act as a Visual Director for Veo3 (AI Video Generation).
+Act as a Visual Director for Veo3 (AI Video Generation).
 
-NOTE: Do not generate actual images or videos. Provide structured text prompts only.
+NOTE: Do not generate actual images or videos. Provide structured text prompts only. Your goal is to make the visual transition highly explosive and visually striking, tailored to the specific script to bring the viewer back to the host for the conclusion. DO NOT include any on-screen text or typography graphics.
 
-# 1. INPUT DATA:
-A. CHARACTER DESCRIPTION (Fixed Appearance):
-A completely flat 2D vector illustration of a male with light skin and wavy, medium-length blonde hair, wearing a solid grey long-sleeve shirt depicted as flat solid shapes with no texture. Facial features are minimal with simple dot eyes and line mouth. The character has a simple blonde stubble beard. Visual style is ultra-flat, solid colors, tech-minimalist, zero shading, no 3D rendering.
+# 1. INPUT DATA (USER FILL HERE):
+A1. AVATAR CHARACTER DESCRIPTION (The Channel Host):
+A completely flat 2D vector illustration of a male with light beige skin and short straight dark hair, wearing a pastel pink polo shirt depicted as flat solid shapes with no texture. Facial features are extremely minimal with simple dot eyes, short line eyebrows, and a line mouth. The character has a clean-shaven face. Visual style is ultra-flat, solid colors, tech-minimalist, zero shading, no 3D rendering.
 
-B. SCRIPT:
-SCENCE 59: Tôi đã phá vỡ mọi quy tắc, vượt qua mọi kỳ vọng và định nghĩa lại cách một nhà sáng tạo nội dung kiếm tiền.
+A2. STORY CHARACTER DESCRIPTION (The Narrated Character):
+A completely flat 2D vector illustration of a man with warm tan skin and dark, slightly wavy hair brushed back, wearing a medium blue long-sleeve collared work shirt with a white undershirt peaking out at the neck. He has two small, flat white patches with red borders on his chest. Facial features are minimal with simple dot eyes and a line mouth. The character has a thick black mustache. Visual style is ultra-flat, solid colors, tech-minimalist, zero shading, no 3D rendering.
+
+B. SCRIPT (Outro/Conclusion Scene):
+Góc khuất đằng sau Gã lao công tỷ đô đã được phơi bày, liệu có bạn nào ở đây đã lờ mờ đoán ra danh tính thực sự của nhân vật ngày hôm nay chưa nhở?
 
 # 2. MAPPING RULES:
-- VISUAL SCENE & MOTION: Strictly analyze the script context. Describe the background environment, objects, and atmosphere in FULL DETAIL based on the script. If the script mentions specific props, locations, or situations, they MUST be visually described here. CRITICAL FOR 8-SECOND VIDEOS: The scene MUST NOT be static. You MUST include continuous, dynamic camera movements (e.g., "Camera slowly pushes in while panning right", "Dynamic tracking shot capturing the room") AND active background elements (e.g., "clouds drifting outside the window", "digital screens flickering in the background", "leaves blowing in the wind").
-- ON-SCREEN TEXT: Strictly NO subtitles, NO script text, and NO typography on the video screen.
-- NARRATOR APPEARANCE: Paste the exact "CHARACTER DESCRIPTION" provided in the Input Data. Do not modify it.
-- NARRATOR ACTION & LIP-SYNC: Describe ONLY the specific facial expressions, gestures, or movements relevant to the current scene. You MUST explicitly state that the narrator's mouth is moving and lip-syncing to the voiceover.
-- VOICEOVER: Insert the corresponding script line.
+- SCENE DEFINITION: The provided script represents ONE single, continuous 8-second video scene. DO NOT split the text into multiple scenes.
+- TRANSITION TIMING: The character transformation from A2 BACK TO A1 happens exactly at the 5-second mark (0:05) of the 8-second video.
+- VISUAL SCENE & MOTION: Analyze the script to invent a UNIQUE, dynamic environment and multi-stage camera motion. Explicitly describe a custom, high-impact visual transition effect happening precisely at 5 seconds to conclude the story. The effect must fit the flat 2D vector style and match the script's specific vibe (e.g., an explosive tech-glitch, a dynamic whip-pan morph, a collapsing geometric burst, or a reality-shattering 2D effect). The background environment must dynamically react to this unique burst of energy, transitioning back to the host's original studio/background. ABSOLUTELY NO ON-SCREEN TEXT, TYPOGRAPHY, OR WRITTEN CHARACTERS IN THE VIDEO.
+- CHARACTER APPEARANCE: Describe the full morphing sequence within a single field. Format it strictly as:
+Starts as: [Paste exact A2] -> At 0:05, aggressively morphs back into -> Ends as: [Paste exact A1]
+- CHARACTER ACTION: Analyze the script to create high-energy, continuous acting tailored to the conclusion. A2 MUST trigger the explosive morph at 0:05 with a custom powerful, conclusive gesture (e.g., closing a book, an aggressive screen wipe, snapping fingers, or a final dramatic pose). Describe the high-velocity motion during the transformation, and how A1 (The Host) confidently and dynamically emerges at 5s with maximum charisma, locking intense eye contact with the camera to deliver the final message until 8s.
+- VOICEOVER: Insert the FULL script line into the single voiceover field.
 
 # 3. OUTPUT FORMAT (Strict Constraints):
-- FORMAT: Output each scene as a SINGLE CONTINUOUS PARAGRAPH (Block of text).
-- NO LINE BREAKS: Do not use line breaks within a scene description. Use the separator " | " to distinguish different sections.
+- FORMAT: Output the scene as a SINGLE CONTINUOUS PARAGRAPH (Block of text).
+- NO LINE BREAKS: Do not use line breaks within the scene description. Use the separator " | " to distinguish different sections.
 - LAYOUT:
-SCENE [N]: VISUAL STYLE: Flat 2D vector art style, solid colors, no shading, tech-minimalist, simple minimalist face. | VISUAL SCENE & MOTION (English): [Detailed Environment + Props from Script + Active Background Elements + Continuous Camera Motion] | NARRATOR APPEARANCE (English): [Paste Character Description] | NARRATOR ACTION (English): [Specific Action Only]. The narrator's mouth is moving and lip-syncing to the dialogue. | AUDIO STYLE (English): Clear, Warm, Professional MALE Storytelling voice. Conversational tone. | VOICEOVER ([Language]): [Script Line]]
+SCENE 59: VISUAL STYLE: Flat 2D vector art style, solid colors, no shading, tech-minimalist, simple minimalist face. | VISUAL SCENE & MOTION (English): [Unique dynamic environment + Custom multi-stage camera motion + Custom EXPLOSIVE 2D Transition FX at 0:05 tailored to script, returning to host background, no text] | CHARACTER APPEARANCE (English): Starts as: [A2] -> At 0:05, aggressively morphs back into -> Ends as: [A1] | CHARACTER ACTION (English): [Custom conclusive action triggering the morph from 0s-5s for A2, explosive transition at 0:05, Custom high-energy charismatic pose from 5s-8s for A1 tailored to script] | AUDIO STYLE (English): High-energy, Enthusiastic, Charismatic MALE YouTube Host voice. Very engaging and concluding tone. | VOICEOVER ([Language]): [Full Script Line]

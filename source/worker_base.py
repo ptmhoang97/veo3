@@ -51,11 +51,12 @@ class WorkerThread(QThread):
     def stop(self):
         """Request stop"""
         self._stop_requested = True
-        if self.driver:
-            try:
-                self.driver.quit()
-            except:
-                pass
+        # Giữ browser mở để debug
+        # if self.driver:
+        #     try:
+        #         self.driver.quit()
+        #     except:
+        #         pass
     
     def _interruptible_wait(self, condition_func, timeout_seconds, check_interval=1):
         """Wait với khả năng interrupt bởi stop request.
@@ -193,6 +194,7 @@ class WorkerThread(QThread):
             show: True để hiện window, False để ẩn
         """
         if not self.driver:
+            self.log("⚠️ toggle_firefox_visibility: driver = None")
             return
         
         # Nếu đang ở headless mode, không làm gì
@@ -202,50 +204,58 @@ class WorkerThread(QThread):
         try:
             if show:
                 # Hiển thị Firefox window - đưa ra foreground
-                self.driver.set_window_size(1200, 800)
-                time.sleep(0.2)  # Đợi window resize
                 self.driver.set_window_position(100, 100)
-                time.sleep(0.2)  # Đợi window move
+                self.driver.set_window_size(1200, 800)
                 
                 # Focus vào window
                 try:
                     self.driver.switch_to.window(self.driver.current_window_handle)
                     self.driver.execute_script("window.focus();")
-                    
-                    # Windows-specific: đưa window ra foreground
-                    import ctypes
-                    try:
-                        # Search for Firefox window using nonlocal list
-                        found_windows = []
-                        
-                        def callback(hwnd, lparam):
-                            if ctypes.windll.user32.IsWindowVisible(hwnd):
-                                length = ctypes.windll.user32.GetWindowTextLengthW(hwnd)
-                                if length > 0:
-                                    buffer = ctypes.create_unicode_buffer(length + 1)
-                                    ctypes.windll.user32.GetWindowTextW(hwnd, buffer, length + 1)
-                                    if "Mozilla Firefox" in buffer.value or "Gemini" in buffer.value:
-                                        found_windows.append(hwnd)
-                            return True
-                        
-                        WNDENUMPROC = ctypes.WINFUNCTYPE(ctypes.c_bool, ctypes.c_long, ctypes.c_long)
-                        ctypes.windll.user32.EnumWindows(WNDENUMPROC(callback), 0)
-                        
-                        if found_windows:
-                            # Set foreground window
-                            ctypes.windll.user32.SetForegroundWindow(found_windows[0])
-                            ctypes.windll.user32.ShowWindow(found_windows[0], 9)  # SW_RESTORE
-                    except:
-                        pass  # Fallback nếu ctypes không hoạt động
                 except:
                     pass
+                
+                # Windows-specific: đưa window ra foreground
+                try:
+                    import ctypes
+                    import ctypes.wintypes
+                    
+                    found_windows = []
+                    
+                    # Dùng WINFUNCTYPE với pointer size cho 64-bit Windows
+                    WNDENUMPROC = ctypes.WINFUNCTYPE(
+                        ctypes.c_bool, 
+                        ctypes.wintypes.HWND,  # HWND = pointer size
+                        ctypes.wintypes.LPARAM  # LPARAM = pointer size
+                    )
+                    
+                    def callback(hwnd, lparam):
+                        if ctypes.windll.user32.IsWindowVisible(hwnd):
+                            length = ctypes.windll.user32.GetWindowTextLengthW(hwnd)
+                            if length > 0:
+                                buffer = ctypes.create_unicode_buffer(length + 1)
+                                ctypes.windll.user32.GetWindowTextW(hwnd, buffer, length + 1)
+                                title = buffer.value
+                                if "Mozilla Firefox" in title or "Firefox" in title:
+                                    found_windows.append(hwnd)
+                        return True
+                    
+                    ctypes.windll.user32.EnumWindows(WNDENUMPROC(callback), 0)
+                    
+                    if found_windows:
+                        hwnd = found_windows[0]
+                        ctypes.windll.user32.ShowWindow(hwnd, 9)  # SW_RESTORE
+                        ctypes.windll.user32.SetForegroundWindow(hwnd)
+                except:
+                    pass
+                
+                self.log("🦊 Firefox window → foreground")
             else:
                 # Ẩn Firefox window - move ra ngoài màn hình
                 self.driver.set_window_position(-10000, -10000)
-                time.sleep(0.1)
+                self.log("🦊 Firefox window → hidden")
                 
         except Exception as e:
-            pass  # Ignore errors if browser is closing or not available
+            self.log(f"⚠️ toggle_firefox_visibility error: {e}")
     
     def _ensure_pro_mode(self):
         """Kiểm tra và chọn mode theo setting (Pro hoặc Thinking)
@@ -569,65 +579,24 @@ def init_firefox_with_profile(firefox_profile, headless=False, log_func=None):
     options = Options()
     if headless:
         options.add_argument("--headless")
-    options.profile = firefox_profile
+    options.add_argument("-profile")
+    options.add_argument(firefox_profile)
     
     # ========== HIDE SELENIUM AUTOMATION ==========
-    # 1. Disable webdriver flag (navigator.webdriver = false)
-    options.set_preference("dom.webdriver.enabled", False)
+    # Chiến lược: để Firefox chạy TỰ NHIÊN nhất có thể
+    # Càng ít override → càng ít bị phát hiện
     
-    # 2. Disable automation extension
+    # 1. Ẩn webdriver flag
+    options.set_preference("dom.webdriver.enabled", False)
     options.set_preference("useAutomationExtension", False)
     
-    # 3. Disable Marionette logging
-    options.set_preference("marionette.logging", False)
-    
-    # 4. Spoof user-agent to look like normal Firefox (not Selenium)
-    # Use latest Firefox user-agent string
-    user_agent = "Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0"
-    options.set_preference("general.useragent.override", user_agent)
-    
-    # 5. Spoof navigator properties
-    options.set_preference("general.platform.override", "Win32")
-    options.set_preference("general.appversion.override", "5.0 (Windows NT 10.0; Win64; x64; rv:128.0) Gecko/20100101 Firefox/128.0")
-    options.set_preference("general.oscpu.override", "Windows NT 10.0; Win64; x64")
-    options.set_preference("general.buildID.override", "20240101000000")
-    
-    # 6. Disable WebRTC leak (can reveal real IP)
-    options.set_preference("media.peerconnection.enabled", False)
-    options.set_preference("media.navigator.enabled", False)
-    
-    # 7. Disable geolocation
-    options.set_preference("geo.enabled", False)
-    
-    # 8. Disable notifications
+    # 2. Tắt notifications popup (không ảnh hưởng fingerprint)
     options.set_preference("dom.webnotifications.enabled", False)
     
-    # 9. Disable WebGL fingerprinting
-    options.set_preference("webgl.disabled", True)
-    
-    # 9. Disable battery API
-    options.set_preference("dom.battery.enabled", False)
-    
-    # 10. Disable gamepad API
-    options.set_preference("dom.gamepad.enabled", False)
-    
-    # 11. Disable sensor APIs
-    options.set_preference("device.sensors.enabled", False)
-    
-    # 12. Disable telemetry
+    # 3. Tắt telemetry (Firefox bình thường cũng có thể tắt)
     options.set_preference("toolkit.telemetry.enabled", False)
-    options.set_preference("toolkit.telemetry.unified", False)
-    options.set_preference("toolkit.telemetry.archive.enabled", False)
     
-    # 13. Privacy settings
-    options.set_preference("privacy.trackingprotection.enabled", True)
-    options.set_preference("privacy.resistFingerprinting", False)  # True can break sites
-    
-    # 14. Disable safe browsing (can leak info to Google)
-    options.set_preference("browser.safebrowsing.enabled", False)
-    options.set_preference("browser.safebrowsing.malware.enabled", False)
-    
-    log("-> Đã ẩn dấu vết Selenium (14 settings)")
+    log("-> Đã cấu hình Firefox (minimal - tự nhiên nhất)")
     
     # Find geckodriver in tools folder
     project_root = os.path.dirname(SCRIPT_DIR)
@@ -647,30 +616,11 @@ def init_firefox_with_profile(firefox_profile, headless=False, log_func=None):
     driver = webdriver.Firefox(service=service, options=options)
     
     # ========== INJECT JAVASCRIPT TO HIDE WEBDRIVER ==========
-    # Override navigator.webdriver after browser starts
+    # Chỉ ẩn navigator.webdriver - không fake thêm gì khác
     try:
         driver.execute_script("""
-            // Remove webdriver property
             Object.defineProperty(navigator, 'webdriver', {
                 get: () => undefined
-            });
-            
-            // Override permissions query
-            const originalQuery = window.navigator.permissions.query;
-            window.navigator.permissions.query = (parameters) => (
-                parameters.name === 'notifications' ?
-                    Promise.resolve({ state: Notification.permission }) :
-                    originalQuery(parameters)
-            );
-            
-            // Override plugins (empty = detectable)
-            Object.defineProperty(navigator, 'plugins', {
-                get: () => [1, 2, 3, 4, 5]
-            });
-            
-            // Override languages
-            Object.defineProperty(navigator, 'languages', {
-                get: () => ['en-US', 'en', 'vi']
             });
         """)
         log("-> Đã inject JS để ẩn webdriver")

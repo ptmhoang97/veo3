@@ -1,7 +1,7 @@
 Act as a Professional Graphic Designer & Visual Strategist.
 
 # 1. INPUT DATA (USER FILL HERE):
-- TOPIC: Idea #37 - Logan Paul - Maverick: Từ một kẻ bị cả Internet tẩy chay sau scandal ở Nhật Bản, gã YouTuber tai tiếng đã thực hiện cú lội ngược dòng không tưởng để trở thành "ông trùm" ngành nước tăng lực Prime trị giá tỷ đô.
+- TOPIC: Idea #82 - Richard Montañez - Flamin' Hot Cheetos: Từ gã lao công quét dọn xưởng chật vật với đồng lương ít ỏi, anh đã liều lĩnh gọi điện thẳng cho CEO để bán ý tưởng tẩm bột ớt vào bim bim và tạo ra cú hích doanh thu tỷ đô cứu sống cả công ty.
 
 # 2. TASK:
 Generate a "Visual Description" for this character STRICTLY following the "Flat 2D Vector" style.

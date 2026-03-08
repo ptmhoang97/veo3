@@ -19,12 +19,12 @@ from PyQt6.QtWidgets import (
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont, QTextCursor
 
-from worker_base import SELENIUM_AVAILABLE, SCRIPT_DIR
-from worker_tab1_character import PrepareCharacterPromptWorker, RunCharacterGeminiWorker
-from worker_tab2_voiceover import PrepareVoiceoverPromptWorker, RunVoiceoverGeminiWorker
-from worker_tab3_create_prompts import CreatePromptsWorker
-from worker_tab3_fill_gemini import FillGeminiWorker
-from worker_tab3_create_video import AutoCreateVideoWorker
+from worker_base import SELENIUM_AVAILABLE, SCRIPT_DIR, BASE_DIR
+from worker_tab1_voiceover import PrepareVoiceoverPromptWorker, RunVoiceoverGeminiWorker
+from worker_tab2_character import PrepareCharacterPromptWorker, RunCharacterGeminiWorker
+from worker_tab3_1_create_prompts import CreatePromptsWorker
+from worker_tab3_2_fill_gemini import FillGeminiWorker
+from worker_tab3_3_create_video import AutoCreateVideoWorker
 from worker_tab4_download import DownloadVideosWorker
 from worker_tab5_review import ReviewVideosDialog
 
@@ -53,8 +53,7 @@ class SettingsDialog(QDialog):
             if 'Prompt' in config_parser:
                 self.config['topic'] = config_parser['Prompt'].get('topic', self.config.get('topic', ''))
                 self.config['language'] = config_parser['Prompt'].get('language', self.config.get('language', 'English'))
-                self.config['scene_from'] = config_parser['Prompt'].get('scene_from', self.config.get('scene_from', '1'))
-                self.config['scene_to'] = config_parser['Prompt'].get('scene_to', self.config.get('scene_to', '60'))
+
             
             if 'URLs' in config_parser:
                 self.config['gemini_url'] = config_parser['URLs'].get('gemini_url', self.config['gemini_url'])
@@ -91,26 +90,7 @@ class SettingsDialog(QDialog):
         self.language.setPlaceholderText("VD: English, Vietnamese, Japanese...")
         prompt_layout.addWidget(self.language, 1, 1)
         
-        prompt_layout.addWidget(QLabel("Scene Range:"), 2, 0)
-        scene_range_widget = QHBoxLayout()
-        self.scene_from = QSpinBox()
-        self.scene_from.setMinimum(1)
-        self.scene_from.setMaximum(60)
-        self.scene_from.setValue(int(self.config.get('scene_from', '1')))
-        scene_range_widget.addWidget(QLabel("From:"))
-        scene_range_widget.addWidget(self.scene_from)
-        
-        self.scene_to = QSpinBox()
-        self.scene_to.setMinimum(1)
-        self.scene_to.setMaximum(60)
-        self.scene_to.setValue(int(self.config.get('scene_to', '60')))
-        scene_range_widget.addWidget(QLabel("To:"))
-        scene_range_widget.addWidget(self.scene_to)
-        scene_range_widget.addStretch()
-        
-        scene_container = QWidget()
-        scene_container.setLayout(scene_range_widget)
-        prompt_layout.addWidget(scene_container, 2, 1)
+
         
         prompt_group.setLayout(prompt_layout)
         layout.addWidget(prompt_group)
@@ -127,12 +107,10 @@ class SettingsDialog(QDialog):
         self.veo_url = QLineEdit(self.config['veo_url'])
         urls_layout.addWidget(self.veo_url, 1, 1)
         
-        urls_layout.addWidget(QLabel("Firefox Profile:"), 2, 0)
+        urls_layout.addWidget(QLabel("Firefox Profile Folder:"), 2, 0)
         self.firefox_profile = QLineEdit(self.config['profile_path'])
+        self.firefox_profile.setPlaceholderText("VD: wo0vat7e.veo (folder trong tools/profiles/)")
         urls_layout.addWidget(self.firefox_profile, 2, 1)
-        btn = QPushButton("Browse")
-        btn.clicked.connect(lambda: self.browse_folder(self.firefox_profile))
-        urls_layout.addWidget(btn, 2, 2)
         
         urls_group.setLayout(urls_layout)
         layout.addWidget(urls_group)
@@ -143,7 +121,7 @@ class SettingsDialog(QDialog):
         
         row = 0
         files_layout.addWidget(QLabel("Prompt Template:"), row, 0)
-        self.template_path = QLineEdit(os.path.join(SCRIPT_DIR, "prompt_base", "prompt_3_video_60scenes_for_gemini.txt"))
+        self.template_path = QLineEdit(os.path.join(SCRIPT_DIR, "prompt_base", "prompt_3_video_scenes_story.txt"))
         files_layout.addWidget(self.template_path, row, 1)
         btn = QPushButton("Browse")
         btn.clicked.connect(lambda: self.browse_file(self.template_path))
@@ -277,8 +255,7 @@ class SettingsDialog(QDialog):
         config['Prompt'] = {
             'topic': self.topic.text(),
             'language': self.language.text(),
-            'scene_from': str(self.scene_from.value()),
-            'scene_to': str(self.scene_to.value())
+
         }
         config['URLs'] = {
             'gemini_url': self.gemini_url.text(),
@@ -309,8 +286,7 @@ class SettingsDialog(QDialog):
             if 'Prompt' in config:
                 self.topic.setText(config['Prompt'].get('topic', ''))
                 self.language.setText(config['Prompt'].get('language', 'English'))
-                self.scene_from.setValue(int(config['Prompt'].get('scene_from', '1')))
-                self.scene_to.setValue(int(config['Prompt'].get('scene_to', '60')))
+
             
             if 'URLs' in config:
                 self.gemini_url.setText(config['URLs'].get('gemini_url', ''))
@@ -359,11 +335,10 @@ class VeoGUI(QMainWindow):
         defaults = {
             'topic': '',
             'language': 'English',
-            'scene_from': '1',
-            'scene_to': '60',
+
             'gemini_url': 'https://gemini.google.com/app',
             'veo_url': 'https://labs.google/fx/tools/flow/project/75d49ef7-f93c-4654-b25e-21c8ba9bcc91',
-            'profile_path': r'C:\Users\Admin\AppData\Roaming\Mozilla\Firefox\Profiles\jvxgmpxu.default-release',
+            'profile_path': 'wo0vat7e.veo',
             'gemini_mode': 'Pro'
         }
         
@@ -373,8 +348,7 @@ class VeoGUI(QMainWindow):
                 result = {
                     'topic': config.get('Prompt', 'topic', fallback=defaults['topic']),
                     'language': config.get('Prompt', 'language', fallback=defaults['language']),
-                    'scene_from': config.get('Prompt', 'scene_from', fallback=defaults['scene_from']),
-                    'scene_to': config.get('Prompt', 'scene_to', fallback=defaults['scene_to']),
+
                     'gemini_url': config.get('URLs', 'gemini_url', fallback=defaults['gemini_url']),
                     'veo_url': config.get('URLs', 'veo_url', fallback=defaults['veo_url']),
                     'profile_path': config.get('Firefox', 'profile_path', fallback=defaults['profile_path']),
@@ -386,6 +360,11 @@ class VeoGUI(QMainWindow):
         
         return defaults
         
+    def _resolve_profile_path(self):
+        """Resolve profile folder name to full path: BASE_DIR/tools/profiles/<folder_name>"""
+        folder_name = self.firefox_profile.text().strip()
+        return os.path.join(BASE_DIR, "tools", "profiles", folder_name)
+    
     def setup_ui(self):
         """Setup UI"""
         central_widget = QWidget()
@@ -417,8 +396,8 @@ class VeoGUI(QMainWindow):
         self.tabs.setMaximumHeight(280)
         main_layout.addWidget(self.tabs, stretch=0)
         
-        self.create_tab1_character()
-        self.create_tab2_voiceover()
+        self.create_tab1_voiceover()
+        self.create_tab2_character()
         self.create_tab3_video()
         self.create_tab4_download()
         self.create_tab5_review()
@@ -506,8 +485,36 @@ class VeoGUI(QMainWindow):
     
     # === Tab Creation Methods ===
     
-    def create_tab1_character(self):
-        """Tab 1: Character Appearance"""
+    def create_tab1_voiceover(self):
+        """Tab 1: Voiceover"""
+        tab = QWidget()
+        layout = QVBoxLayout(tab)
+        layout.setContentsMargins(20, 15, 20, 15)
+        
+        layout.addWidget(QLabel("Tạo voiceover script từ topic + language (Settings)"))
+        layout.addWidget(QLabel("💡 Bước 1: Prepare prompt → Bước 2: Run Gemini để generate"))
+        layout.addStretch()
+        
+        btn1 = QPushButton("📝 Prepare Voiceover Prompt")
+        btn1.setFont(QFont("Arial", 10, QFont.Weight.Bold))
+        btn1.setMinimumHeight(36)
+        btn1.setStyleSheet("QPushButton { background-color: #2196F3; color: white; border-radius: 4px; }"
+                          "QPushButton:hover { background-color: #1976D2; }")
+        btn1.clicked.connect(self.run_prepare_voiceover_prompt)
+        layout.addWidget(btn1)
+        
+        btn2 = QPushButton("🤖 Run Gemini → Get Voiceover Script")
+        btn2.setFont(QFont("Arial", 10, QFont.Weight.Bold))
+        btn2.setMinimumHeight(36)
+        btn2.setStyleSheet("QPushButton { background-color: #4CAF50; color: white; border-radius: 4px; }"
+                          "QPushButton:hover { background-color: #388E3C; }")
+        btn2.clicked.connect(self.run_voiceover_gemini)
+        layout.addWidget(btn2)
+        
+        self.tabs.addTab(tab, "Tab 1 - Voiceover")
+    
+    def create_tab2_character(self):
+        """Tab 2: Character Appearance"""
         tab = QWidget()
         layout = QVBoxLayout(tab)
         layout.setContentsMargins(20, 15, 20, 15)
@@ -532,35 +539,7 @@ class VeoGUI(QMainWindow):
         btn2.clicked.connect(self.run_character_gemini)
         layout.addWidget(btn2)
         
-        self.tabs.addTab(tab, "1️⃣ Character")
-    
-    def create_tab2_voiceover(self):
-        """Tab 2: Voiceover"""
-        tab = QWidget()
-        layout = QVBoxLayout(tab)
-        layout.setContentsMargins(20, 15, 20, 15)
-        
-        layout.addWidget(QLabel("Tạo voiceover script từ topic + language + scene range (Settings)"))
-        layout.addWidget(QLabel("💡 Bước 1: Prepare prompt → Bước 2: Run Gemini để generate"))
-        layout.addStretch()
-        
-        btn1 = QPushButton("📝 Prepare Voiceover Prompt")
-        btn1.setFont(QFont("Arial", 10, QFont.Weight.Bold))
-        btn1.setMinimumHeight(36)
-        btn1.setStyleSheet("QPushButton { background-color: #2196F3; color: white; border-radius: 4px; }"
-                          "QPushButton:hover { background-color: #1976D2; }")
-        btn1.clicked.connect(self.run_prepare_voiceover_prompt)
-        layout.addWidget(btn1)
-        
-        btn2 = QPushButton("🤖 Run Gemini → Get Voiceover Script")
-        btn2.setFont(QFont("Arial", 10, QFont.Weight.Bold))
-        btn2.setMinimumHeight(36)
-        btn2.setStyleSheet("QPushButton { background-color: #4CAF50; color: white; border-radius: 4px; }"
-                          "QPushButton:hover { background-color: #388E3C; }")
-        btn2.clicked.connect(self.run_voiceover_gemini)
-        layout.addWidget(btn2)
-        
-        self.tabs.addTab(tab, "2️⃣ Voiceover")
+        self.tabs.addTab(tab, "Tab 2 - Character")
     
     def create_tab3_video(self):
         """Tab 3: Video (Create Prompts + Fill Gemini + Create Video)"""
@@ -596,7 +575,7 @@ class VeoGUI(QMainWindow):
         btn3.clicked.connect(self.run_auto_create)
         layout.addWidget(btn3)
         
-        self.tabs.addTab(tab, "3️⃣ Video")
+        self.tabs.addTab(tab, "Tab 3 - Video")
     
     def create_tab4_download(self):
         """Tab 4: Download Videos"""
@@ -615,7 +594,7 @@ class VeoGUI(QMainWindow):
         run_btn.clicked.connect(self.run_download)
         layout.addWidget(run_btn)
         
-        self.tabs.addTab(tab, "4️⃣ Download")
+        self.tabs.addTab(tab, "Tab 4 - Download")
     
     def create_tab5_review(self):
         """Tab 5: Review Videos"""
@@ -633,7 +612,7 @@ class VeoGUI(QMainWindow):
         run_btn.clicked.connect(self.open_review_dialog)
         layout.addWidget(run_btn)
         
-        self.tabs.addTab(tab, "5️⃣ Review")
+        self.tabs.addTab(tab, "Tab 5 - Review")
     
     def create_tab6_settings(self):
         """Tab 6: Settings"""
@@ -657,15 +636,8 @@ class VeoGUI(QMainWindow):
         self.firefox_profile = QLineEdit(self.config['profile_path'])
         self.topic = QLineEdit(self.config.get('topic', ''))
         self.language = QLineEdit(self.config.get('language', 'English'))
-        self.scene_from = QSpinBox()
-        self.scene_from.setMinimum(1)
-        self.scene_from.setMaximum(60)
-        self.scene_from.setValue(int(self.config.get('scene_from', '1')))
-        self.scene_to = QSpinBox()
-        self.scene_to.setMinimum(1)
-        self.scene_to.setMaximum(60)
-        self.scene_to.setValue(int(self.config.get('scene_to', '60')))
-        self.template_path = QLineEdit(os.path.join(SCRIPT_DIR, "prompt_base", "prompt_3_video_60scenes_for_gemini.txt"))
+
+        self.template_path = QLineEdit(os.path.join(SCRIPT_DIR, "prompt_base", "prompt_3_video_scenes_story.txt"))
         self.character_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_character_appearance", "output_prompt_character_appearance.txt"))
         self.script_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_voiceover_60scenes", "output_prompt_voiceover_60scenes.txt"))
         self.output_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "3.1_prompt_video_60scenes_for_gemini"))
@@ -714,8 +686,7 @@ class VeoGUI(QMainWindow):
         dialog.firefox_profile.setText(self.firefox_profile.text())
         dialog.topic.setText(self.topic.text())
         dialog.language.setText(self.language.text())
-        dialog.scene_from.setValue(self.scene_from.value())
-        dialog.scene_to.setValue(self.scene_to.value())
+
         dialog.template_path.setText(self.template_path.text())
         dialog.character_path.setText(self.character_path.text())
         dialog.script_path.setText(self.script_path.text())
@@ -734,8 +705,7 @@ class VeoGUI(QMainWindow):
             self.firefox_profile.setText(dialog.firefox_profile.text())
             self.topic.setText(dialog.topic.text())
             self.language.setText(dialog.language.text())
-            self.scene_from.setValue(dialog.scene_from.value())
-            self.scene_to.setValue(dialog.scene_to.value())
+
             self.template_path.setText(dialog.template_path.text())
             self.character_path.setText(dialog.character_path.text())
             self.script_path.setText(dialog.script_path.text())
@@ -779,8 +749,28 @@ class VeoGUI(QMainWindow):
         self.log(message)
     
     def on_worker_finished(self, success, message):
+        # Khi failed và browser vẫn mở → đưa Firefox ra foreground để debug
+        browser_still_open = (
+            not success 
+            and self.current_worker 
+            and hasattr(self.current_worker, 'driver') 
+            and self.current_worker.driver
+        )
+        
+        if browser_still_open:
+            try:
+                self.current_worker.toggle_firefox_visibility(True)
+                self.log("🦊 Firefox đã được đưa ra foreground để debug")
+                self.log("💡 Dùng checkbox 'Hide Firefox' để ẩn/hiện browser")
+            except:
+                pass
+        
         self.set_running(False)
-        self.current_worker = None
+        
+        # Giữ current_worker nếu browser vẫn mở (để toggle hide/show còn hoạt động)
+        if not browser_still_open:
+            self.current_worker = None
+        
         if success:
             self.log(f"\n✅ {message}")
             QMessageBox.information(self, "Success", message)
@@ -848,7 +838,7 @@ class VeoGUI(QMainWindow):
         
         self.current_worker = RunCharacterGeminiWorker(
             input_path, output_path,
-            self.firefox_profile.text(),
+            self._resolve_profile_path(),
             self.gemini_url.text(),
             self.hide_firefox_checkbox.isChecked(),
             self.headless_checkbox.isChecked(),
@@ -894,7 +884,6 @@ class VeoGUI(QMainWindow):
         
         self.current_worker = PrepareVoiceoverPromptWorker(
             topic, language,
-            self.scene_from.value(), self.scene_to.value(),
             template_path, output_path
         )
         self.current_worker.output_signal.connect(self.on_worker_output)
@@ -929,7 +918,7 @@ class VeoGUI(QMainWindow):
         
         self.current_worker = RunVoiceoverGeminiWorker(
             input_path, output_path,
-            self.firefox_profile.text(),
+            self._resolve_profile_path(),
             self.gemini_url.text(),
             self.hide_firefox_checkbox.isChecked(),
             self.headless_checkbox.isChecked(),
@@ -1035,7 +1024,7 @@ class VeoGUI(QMainWindow):
         self.current_worker = FillGeminiWorker(
             self.output_path.text(),
             self.gemini_output.text(),
-            self.firefox_profile.text(),
+            self._resolve_profile_path(),
             self.gemini_url.text(),
             self.hide_firefox_checkbox.isChecked(),
             self.headless_checkbox.isChecked(),
@@ -1080,7 +1069,7 @@ class VeoGUI(QMainWindow):
         self.current_worker = AutoCreateVideoWorker(
             self.gemini_output.text(),
             self.veo_url.text(),
-            self.firefox_profile.text(),
+            self._resolve_profile_path(),
             self.wait_for_enter.isChecked(),
             self.auto_restart_on_failure.isChecked(),
             self._timeout_seconds
@@ -1116,7 +1105,7 @@ class VeoGUI(QMainWindow):
         
         self.current_worker = DownloadVideosWorker(
             self.veo_url.text(),
-            self.firefox_profile.text(),
+            self._resolve_profile_path(),
             self.download_wait_for_enter.isChecked()
         )
         self.current_worker.output_signal.connect(self.on_worker_output)

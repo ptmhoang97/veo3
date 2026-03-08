@@ -4,10 +4,10 @@ NOTE: Do not generate actual images or videos. Provide structured text prompts o
 
 # 1. INPUT DATA:
 A. CHARACTER DESCRIPTION (Fixed Appearance):
-A completely flat 2D vector illustration of a male with light skin and wavy, medium-length blonde hair, wearing a solid grey long-sleeve shirt depicted as flat solid shapes with no texture. Facial features are minimal with simple dot eyes and line mouth. The character has a simple blonde stubble beard. Visual style is ultra-flat, solid colors, tech-minimalist, zero shading, no 3D rendering.
+A completely flat 2D vector illustration of a man with warm tan skin and dark, slightly wavy hair brushed back, wearing a medium blue long-sleeve collared work shirt with a white undershirt peaking out at the neck. He has two small, flat white patches with red borders on his chest. Facial features are minimal with simple dot eyes and a line mouth. The character has a thick black mustache. Visual style is ultra-flat, solid colors, tech-minimalist, zero shading, no 3D rendering.
 
 B. SCRIPT:
-SCENCE 44: Năm thứ hai, chúng tôi vượt mốc 1,2 tỷ đô la. Trở thành nhà tài trợ chính thức cho các đội bóng hàng đầu châu Âu.
+SCENCE 44: Cả phòng họp vỡ òa! Mọi người ùa lên nếm thử và gục ngã trước thứ gia vị cay xé lưỡi. Họ lao vào bắt tay, chúc mừng gã lao công mà vài phút trước họ vẫn còn khinh bỉ!
 
 # 2. MAPPING RULES:
 - VISUAL SCENE & MOTION: Strictly analyze the script context. Describe the background environment, objects, and atmosphere in FULL DETAIL based on the script. If the script mentions specific props, locations, or situations, they MUST be visually described here. CRITICAL FOR 8-SECOND VIDEOS: The scene MUST NOT be static. You MUST include continuous, dynamic camera movements (e.g., "Camera slowly pushes in while panning right", "Dynamic tracking shot capturing the room") AND active background elements (e.g., "clouds drifting outside the window", "digital screens flickering in the background", "leaves blowing in the wind").
