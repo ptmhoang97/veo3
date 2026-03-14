@@ -4,6 +4,7 @@ Tạo prompt và chạy Gemini để generate voiceover script cho 60 scenes
 """
 
 import os
+import re
 import shutil
 import tempfile
 import time
@@ -41,15 +42,17 @@ class PrepareVoiceoverPromptWorker(WorkerThread):
                 template = f.read()
             self.log(f"✅ Template loaded: {template_name}\n")
             
-            # Replace placeholders
+            # Replace placeholders using regex (generic - works with any text inside [])
             self.log("⚙️ Filling topic and language into template...")
-            prompt = template.replace(
-                "[Điền chủ đề. VD: Câu chuyện thành lập Virgin Atlantic và lầm tưởng khởi nghiệp 0 đồng]",
-                self.topic
+            prompt = re.sub(
+                r'(- TOPIC: )\[.*?\]',
+                rf'\1[{self.topic}]',
+                template
             )
-            prompt = prompt.replace(
-                "[Vietnamese]",
-                f"[{self.language}]"
+            prompt = re.sub(
+                r'(- LANGUAGE: )\[.*?\]',
+                rf'\1[{self.language}]',
+                prompt
             )
             
             # Create output directory if needed

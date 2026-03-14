@@ -41,11 +41,12 @@ class PrepareCharacterPromptWorker(WorkerThread):
                 template = f.read()
             self.log(f"✅ Template loaded: {template_name}\n")
             
-            # Replace topic placeholder
+            # Replace topic placeholder using regex (generic - works with any text inside [])
             self.log("⚙️ Filling topic into template...")
-            prompt = template.replace(
-                "[Điền chủ đề. VD: Richard Branson thành lập Virgin Atlantic]",
-                self.topic
+            prompt = re.sub(
+                r'(- TOPIC: )\[.*?\]',
+                rf'\1[{self.topic}]',
+                template
             )
             
             # Create output directory if needed

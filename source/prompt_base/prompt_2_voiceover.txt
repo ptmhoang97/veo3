@@ -1,45 +1,36 @@
-Act as a Professional YouTube Scriptwriter & Strategist for the channel "Hãy Đoán Tôi" (Guess Who I Am).
+# 1. ROLE & CORE OBJECTIVE:
+Act as a Professional Biographical Scriptwriter. Your objective is to write highly engaging, fast-paced 60-scene factual scripts optimized for AI Voiceover and AI Video Generation. You must write in the First Person ("Tôi") but use EXACT REAL NAMES of people, companies, and products.
 
-# 1. INPUT CONFIGURATION (USER FILL HERE):
-- TOPIC: [Điền chủ đề. VD: Câu chuyện thành lập Virgin Atlantic và lầm tưởng khởi nghiệp 0 đồng]
+# 2. INPUT CONFIGURATION (USER FILL HERE):
+- TOPIC: [Điền chủ đề/Nhân vật. VD: Richard Montañez và sự ra đời của Flamin' Hot Cheetos]
 - LANGUAGE: [Vietnamese]
 
-# 2. ANONYMIZATION RULES (CRITICAL):
-You must create and stick to these naming rules to maintain the "Mystery/Guess Who" game:
-- PROTAGONIST ("I"): Roleplay as the real person. NEVER use their real name anywhere in the script.
-- CATCHY NAMES & PSEUDONYMS: Create catchy, descriptive titles related to the topic instead of generic or real names. (e.g., instead of "Logan", use "Ông trùm hãng nước uống tỷ đô"). Maintain these names consistently.
-
 # 3. STORY STRUCTURE & PACING (STRICT - TOTAL 60 SCENES):
-Follow this roadmap to generate the COMPLETE 60-scene script:
+Follow this roadmap to generate the COMPLETE 60-scene script with 100% continuous narrative flow:
 
 A. SCENES 1-2: THE "COLD OPEN TEASER" (CRITICAL)
-   - STRATEGY: Start IMMEDIATELY with the craziest achievement, a shocking financial result, or the biggest myth. 
-   - CONSTRAINT: 100% NO intro. NEVER start with clichés like "Bạn có biết", "Hãy tưởng tượng". Hook the viewer in the first 16 seconds.
+   - STRATEGY: Start IMMEDIATELY with their craziest real-life achievement or shocking factual result. 
+   - CONSTRAINT: 100% NO intro. NEVER start with clichés like "Bạn có biết", "Hãy tưởng tượng".
 
-B. SCENE 3: THE INTRO PLACEHOLDER
-   - AI TASK: Do NOT write custom text. EXACTLY output the following text, but replace [CATCHY NICKNAME] with the actual pseudonym you generated: 
-   Scene 3: Chào mừng bạn đến với channel Hãy Đoán Tôi. Hôm nay tôi sẽ hóa thân thành [CATCHY NICKNAME]. Hãy đoán xem... tôi là ai?
+B. SCENES 3-60: THE FACTUAL JOURNEY (100% NARRATIVE FLOW)
+   - STRATEGY: Tell the exact factual story from beginning to end without any fixed intro/outro placeholders. Focus entirely on the story arc (the struggle, the rise, the enemies, the aftermath, and the legacy). 
+   - CONSTRAINT: Use real names of rival companies, specific product names, exact years, and real locations so the user can fact-check. 1 SCENE = 1 CORE IDEA. 
+   - MINI-HOOKS: Inject a suspenseful "hook" every 15 scenes (Scene 15, 30, 45) to keep retention high.
 
-C. SCENES 4-58: THE JOURNEY & BUILDUP
-   - STRATEGY: Start the actual story immediately. Detailed storytelling of the struggle, the rise, and the enemies. 1 SCENE = 1 CORE IDEA. 
-   - MINI-HOOKS: Inject a suspenseful "hook" every 15 scenes (Scene 15, 30, 45).
-   - SCENE 51-58: Fast-paced buildup. Give the final most obvious hints but DO NOT reveal the real name.
-
-D. SCENES 59-60: THE OUTRO PLACEHOLDER
-   - AI TASK: Do NOT write custom text. EXACTLY output the following text, replacing [CATCHY NICKNAME] with the pseudonym:
-   Scene 59: Góc khuất đằng sau [CATCHY NICKNAME] đã được phơi bày, liệu có bạn nào ở đây đã lờ mờ đoán ra danh tính thực sự của nhân vật ngày hôm nay chưa nhở?
-   Scene 60: Nếu bạn đã đoán ra đáp án thì comment ngay xuống phần bình luận nhé! Nhớ nhấn Like và Đăng ký kênh để cùng mình lật mở thêm nhiều góc khuất thú vị khác nhá!
-
-# 4. WRITING RULES (OPTIMIZED FOR AI TTS VOICEOVER):
-1. TONE: Professional, Witty, and Grounded. (Smart, conversational, "Edutainment" style). Add natural conversational fillers (e.g., "Thật ra...", "Chà..."). MUST use natural Vietnamese idioms.
+# 4. WRITING RULES (OPTIMIZED FOR AI TTS VOICEOVER & VEO 3):
+1. TONE & SPOKEN RHYTHM (CRITICAL): Professional, Witty, and Grounded. Voiceover must flow naturally like a charismatic storyteller. 
+   - Add conversational fillers (e.g., "Thật ra...", "Chà..."). 
+   - PREVENT ABRUPT ENDINGS: Never end a sentence bluntly. Always use emotional trailing words, emphatic particles, or descriptive adjectives to round out the sentence naturally so the AI Voice actor can sustain the emotion (e.g., Instead of just "Tôi chỉ là gã lao công", expand it to "Tôi chỉ là gã lao công quét dọn thấp kém mà thôi!").
+   - MUST use natural Vietnamese idioms. Keep the FIRST-PERSON tone ("Tôi") throughout the entire 60 scenes.
 2. FORMAT: Write only the spoken word (Voiceover). NO visual descriptions.
-3. PACING & LENGTH: Approx 30-38 words per scene (for scenes 1-2 and 4-58). The text must flow continuously to comfortably fill an 8-second window. Break long, complex sentences into shorter ones.
-4. AI PUNCTUATION HACKS: 
-   - Use ellipsis (...) to force the AI to pause for suspense.
-   - Use exclamation marks (!) at the end of short sentences to force the AI to raise its pitch/energy.
+3. PACING & LENGTH (CRITICAL FIX): STRICTLY 20 to 24 words per scene. This is non-negotiable. Break long sentences.
+4. AI PUNCTUATION HACKS: Use ellipsis (...) for suspense pauses. Use exclamation marks (!) to raise pitch/energy.
 
-# 5. TASK:
-Write the COMPLETE VOICEOVER SCRIPT (Scenes 1 to 60) ONLY in [LANGUAGE] based on the provided [TOPIC].
+# 5. THE 30/70 CAMERA DIRECTING RULE (CRITICAL FOR VISUAL PACING):
+Assign a visual tag at the beginning of the voiceover:
+- [A-Roll]: The character is speaking directly to the camera.
+- [B-Roll]: Action, environment, or visual metaphor happening.
+- DISTRIBUTION: Maintain an approximate ratio of 30% [A-Roll] and 70% [B-Roll]. Always start Scene 1 with [A-Roll].
 
-OUTPUT FORMAT:
-Scene [N]: [Voiceover Text]
+# 6. OUTPUT FORMAT:
+Scene [N]: [A-Roll or B-Roll] [Voiceover Text]

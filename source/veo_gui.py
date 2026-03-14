@@ -129,7 +129,7 @@ class SettingsDialog(QDialog):
         row += 1
         
         files_layout.addWidget(QLabel("Character Description:"), row, 0)
-        self.character_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_character_appearance", "output_prompt_character_appearance.txt"))
+        self.character_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_character_appearance", "output_prompt_character_appearance.txt"))
         files_layout.addWidget(self.character_path, row, 1)
         btn = QPushButton("Browse")
         btn.clicked.connect(lambda: self.browse_file(self.character_path))
@@ -137,7 +137,7 @@ class SettingsDialog(QDialog):
         row += 1
         
         files_layout.addWidget(QLabel("Script Scenes:"), row, 0)
-        self.script_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_voiceover_60scenes", "output_prompt_voiceover_60scenes.txt"))
+        self.script_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_voiceover_60scenes", "output_prompt_voiceover_60scenes.txt"))
         files_layout.addWidget(self.script_path, row, 1)
         btn = QPushButton("Browse")
         btn.clicked.connect(lambda: self.browse_file(self.script_path))
@@ -638,8 +638,8 @@ class VeoGUI(QMainWindow):
         self.language = QLineEdit(self.config.get('language', 'English'))
 
         self.template_path = QLineEdit(os.path.join(SCRIPT_DIR, "prompt_base", "prompt_3_video_scenes_story.txt"))
-        self.character_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_character_appearance", "output_prompt_character_appearance.txt"))
-        self.script_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_voiceover_60scenes", "output_prompt_voiceover_60scenes.txt"))
+        self.character_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_character_appearance", "output_prompt_character_appearance.txt"))
+        self.script_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_voiceover_60scenes", "output_prompt_voiceover_60scenes.txt"))
         self.output_path = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "3.1_prompt_video_60scenes_for_gemini"))
         self.gemini_output = QLineEdit(os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "3.2_prompt_video_60scenes_for_veo3", "prompt_video_60scenes.txt"))
         
@@ -796,7 +796,7 @@ class VeoGUI(QMainWindow):
             QMessageBox.critical(self, "Error", f"Template file not found:\n{template_path}")
             return
         
-        output_path = os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_character_appearance", "input_prompt_character_appearance.txt")
+        output_path = os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_character_appearance", "input_prompt_character_appearance.txt")
         
         self.console.clear()
         self.log("=" * 60)
@@ -822,7 +822,7 @@ class VeoGUI(QMainWindow):
             QMessageBox.critical(self, "Error", "Selenium is not installed!")
             return
         
-        input_path = os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_character_appearance", "input_prompt_character_appearance.txt")
+        input_path = os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_character_appearance", "input_prompt_character_appearance.txt")
         if not os.path.exists(input_path):
             QMessageBox.critical(self, "Error", 
                 "Prepared prompt not found!\n\nHãy chạy 'Prepare Character Prompt' trước.")
@@ -875,7 +875,7 @@ class VeoGUI(QMainWindow):
             QMessageBox.critical(self, "Error", f"Template file not found:\n{template_path}")
             return
         
-        output_path = os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_voiceover_60scenes", "input_prompt_voiceover_60scenes.txt")
+        output_path = os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_voiceover_60scenes", "input_prompt_voiceover_60scenes.txt")
         
         self.console.clear()
         self.log("=" * 60)
@@ -902,7 +902,7 @@ class VeoGUI(QMainWindow):
             QMessageBox.critical(self, "Error", "Selenium is not installed!")
             return
         
-        input_path = os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "2_voiceover_60scenes", "input_prompt_voiceover_60scenes.txt")
+        input_path = os.path.join(SCRIPT_DIR, "..", "_output", "proceed_prompts", "1_voiceover_60scenes", "input_prompt_voiceover_60scenes.txt")
         if not os.path.exists(input_path):
             QMessageBox.critical(self, "Error", 
                 "Prepared prompt not found!\n\nHãy chạy 'Prepare Voiceover Prompt' trước.")
